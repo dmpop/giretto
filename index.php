@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+ini_set('display_errors', 0);
 include('config.php');
 if ($protect) {
 	require_once('protect.php');
@@ -52,23 +54,34 @@ if ($protect) {
 					}
 				}
 				// Populate a drop-down list with subdirectories
-				echo '<select style="width: 15em;" name="" onchange="javascript:location.href = this.value;">';
-				echo '<option value="Default">Choose destination</option>';
+				echo '<select style="width: auto;" name="" onchange="javascript:location.href = this.value;">';
+				echo '<option value="Default">Choose place</option>';
 				foreach ($sub_dirs as $dir) {
 					$dir_name = basename($dir);
 					$dir_option = str_replace('\'', '&apos;', $current_dir . DIRECTORY_SEPARATOR . $dir_name);
 					echo "<option value='?d=" . ltrim($dir_option, '/') . "'>" . $dir_name . "</option>";
 				}
 				echo "</select>";
-				echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"> <img style="vertical-align: -0.5em;" src="svg/sun.svg" /></a>';
-				echo "</div>";
 			}
+			?>
+			<form style='display: inline;' method='POST' action=''>
+				<input style='display: inline; width: 9em; margin-left: 0.5em;' type='text' name='place'> 
+				<input style='display: inline; margin-left: 0.5em; margin-right: 1em;' type='submit' name='new' value='+'>
+			</form>
+			<?php
+			echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"> <img style="vertical-align: -0.5em;" title="Weather forecast for the current location" src="svg/sun.svg" /></a>';
 			// Create the current directory
 			if (!file_exists($current_dir)) {
 				mkdir($current_dir, 0755, true);
 			}
+			if(isset($_POST["new"])) {
+				// Create new directory
+				mkdir($current_dir . DIRECTORY_SEPARATOR . $_POST["place"], 0755, true);
+				}
 			// Read CSV file
 			$csvfile = $current_dir . DIRECTORY_SEPARATOR . "data.csv";
+			$lines = count(file($csvfile));
+			if ($lines > 1) {
 			if (!is_file($csvfile)) {
 				$HEADER = "Place;Map;Note\n";
 				file_put_contents($csvfile, $HEADER);
@@ -100,6 +113,9 @@ if ($protect) {
 				}
 				fclose($handle);
 			}
+		} else {
+			echo "<div style='margin-top: 1em;'>So empty here. Press the <strong>Edit</strong> button to add places.</div>";
+		}
 			?>
 			</tbody>
 		</table>
