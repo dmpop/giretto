@@ -1,0 +1,44 @@
+#content {
+    margin: 0px auto;
+    text-align: center;
+}
+
+h1 {
+    letter-spacing: 3px;
+    color: #9b4dca;
+}
+
+textarea {
+    font-size: 15px;
+    width: 90%;
+    height: 50%;
+    line-height: 1.9;
+}
+
+table {
+    border-spacing: 5px;
+    margin: 0px auto;
+    text-align: left;
+    width: 100%;
+    max-width: 800px;
+}
+
+.sortable {
+    cursor: pointer;
+}
+
+/* @import url('https://fonts.googleapis.com/css?family=Barlow:300,400'); */
+
+@font-face {
+    font-family: "Barlow";
+    font-style: normal;
+    font-weight: 300;
+    src: url("../fonts/Barlow-Light.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Barlow";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/Barlow-Regular.woff2") format("woff2");
+}
