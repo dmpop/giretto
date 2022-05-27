@@ -65,10 +65,11 @@ if ($protect) {
 				echo "</select>";
 			}
 			?>
-			<form style='display: inline;' method='POST' action=''>
+			<form method='POST' action=''>
 				<input style='display: inline; width: 9em; margin-left: 0.5em;' type='text' name='place'>
 				<input style='display: inline; margin-left: 0.5em; margin-right: 1em;' type='submit' name='new' value='+'>
 			</form>
+			<div>
 			<?php
 			// Get current weather from wttr.in
 			$url = "https://wttr.in/" . end(explode("/", $current_dir)) . "?format=%c+%t,+%w,+%p,+%h";
@@ -77,7 +78,7 @@ if ($protect) {
 			curl_setopt($ch, CURLOPT_URL, $url);
 			$result = curl_exec($ch);
 			echo $result;
-			echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"><img style="margin-left: 0.5em; vertical-align: -0.4em;" title="Weather forecast for the current location" src="svg/sun.svg" /></a>';
+			echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"><img style="margin-left: 0.5em; vertical-align: -0.4em;" title="Weather forecast for the current location" src="svg/sun.svg" /></a></div>';
 			// Create the current directory
 			if (!file_exists($current_dir)) {
 				mkdir($current_dir, 0755, true);
