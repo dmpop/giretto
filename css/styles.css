@@ -8,6 +8,10 @@ h1 {
     color: #9b4dca;
 }
 
+p {
+    margin-bottom: 0.3em;
+}
+
 textarea {
     font-size: 15px;
     width: 90%;

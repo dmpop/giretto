@@ -2,6 +2,7 @@
 error_reporting(0);
 ini_set('display_errors', 0);
 include('config.php');
+include 'inc/parsedown.php';
 if ($protect) {
 	require_once('protect.php');
 }
@@ -65,7 +66,7 @@ if ($protect) {
 			}
 			?>
 			<form style='display: inline;' method='POST' action=''>
-				<input style='display: inline; width: 9em; margin-left: 0.5em;' type='text' name='place'> 
+				<input style='display: inline; width: 9em; margin-left: 0.5em;' type='text' name='place'>
 				<input style='display: inline; margin-left: 0.5em; margin-right: 1em;' type='submit' name='new' value='+'>
 			</form>
 			<?php
@@ -74,48 +75,49 @@ if ($protect) {
 			if (!file_exists($current_dir)) {
 				mkdir($current_dir, 0755, true);
 			}
-			if(isset($_POST["new"])) {
+			if (isset($_POST["new"])) {
 				// Create new directory
 				mkdir($current_dir . DIRECTORY_SEPARATOR . $_POST["place"], 0755, true);
-				}
+			}
 			// Read CSV file
 			$csvfile = $current_dir . DIRECTORY_SEPARATOR . "data.csv";
 			$lines = count(file($csvfile));
 			if ($lines > 1) {
-			if (!is_file($csvfile)) {
-				$HEADER = "Place;Map;Note\n";
-				file_put_contents($csvfile, $HEADER);
-			}
-			$row = 1;
-			if (($handle = fopen($csvfile, "r")) !== FALSE) {
-				while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-					$num = count($data);
-					if ($row == 1) {
-						echo '<thead><tr>';
-					} else {
-						echo '<tr>';
-					}
-					$value0 = $data[0];
-					$value1 = $data[1];
-					$value2 = $data[2];
-					if ($row == 1) {
-						echo '<th class="sortable" onclick="sortTable(0)">' . $value0 . '</th>';
-						echo '<th class="sortable" onclick="sortTable(1)">' . $value2 . '</th>';
-					} else {
-						echo '<td>' . $value0 . ' <a target="_blank" href="' . $value1 . '"><img style="vertical-align: -0.3em;" src="svg/link.svg" /></a></td><td>' . $value2 . '</td>';
-					}
-					if ($row == 1) {
-						echo '</tr></thead><tbody>';
-					} else {
-						echo '</tr>';
-					}
-					$row++;
+				if (!is_file($csvfile)) {
+					$HEADER = "Place;Map;Note\n";
+					file_put_contents($csvfile, $HEADER);
 				}
-				fclose($handle);
+				$row = 1;
+				if (($handle = fopen($csvfile, "r")) !== FALSE) {
+					while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+						$num = count($data);
+						if ($row == 1) {
+							echo '<thead><tr>';
+						} else {
+							echo '<tr>';
+						}
+						$value0 = $data[0];
+						$value1 = $data[1];
+						$value2 = $data[2];
+						$Parsedown = new Parsedown();
+						if ($row == 1) {
+							echo '<th class="sortable" onclick="sortTable(0)">' . $value0 . '</th>';
+							echo '<th class="sortable" onclick="sortTable(1)">' . $value2 . '</th>';
+						} else {
+							echo '<td><p>' . $value0 . ' <a target="_blank" href="' . $value1 . '"><img style="vertical-align: -0.3em;" src="svg/link.svg" /></a></p></td><td>' . $Parsedown->text($value2) . '</td>';
+						}
+						if ($row == 1) {
+							echo '</tr></thead><tbody>';
+						} else {
+							echo '</tr>';
+						}
+						$row++;
+					}
+					fclose($handle);
+				}
+			} else {
+				echo "<div style='margin-top: 1em;'>So empty here. Press the <strong>Edit</strong> button to add places.</div>";
 			}
-		} else {
-			echo "<div style='margin-top: 1em;'>So empty here. Press the <strong>Edit</strong> button to add places.</div>";
-		}
 			?>
 			</tbody>
 		</table>
