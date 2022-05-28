@@ -73,8 +73,8 @@ if ($protect) {
 			?>
 			<form method='POST' action=''>
 				<input style='display: inline; width: 9em; margin-left: 0.5em;' type='text' name='place'>
-				<input style='display: inline; margin-left: 0.5em; margin-right: 0.5em;' type='submit' name='new' value='Add place'>
-				<input style='display: inline;' type='submit' name='weather' value='Weather'>
+				<input class="button" style='display: inline; margin-left: 0.5em; margin-right: 0.5em;' type='submit' name='add' value='Add'>
+				<input class="button button-clear" style='display: inline;' type='submit' name='weather' value='Weather'>
 			</form>
 			<?php
 			// Get current weather from wttr.in
@@ -88,21 +88,28 @@ if ($protect) {
 				$result = curl_exec($ch);
 				echo $result;
 			}
-			echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"><img style="margin-left: 0.5em; vertical-align: -0.4em;" title="Weather forecast for the current location" src="svg/sun.svg" /></a></div>';
+			echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"><img style="vertical-align: -0.4em;" title="Weather forecast for the current location" src="svg/sun.svg" /></a></div>';
 			// Create the current directory
 			if (!file_exists($current_dir)) {
 				mkdir($current_dir, 0755, true);
 			}
-			if (isset($_POST["new"]) && !empty($_POST["place"])) {
+			if (isset($_POST["add"]) && !empty($_POST["place"])) {
 				// Create new directory
 				mkdir($current_dir . DIRECTORY_SEPARATOR . $_POST["place"], 0755, true);
+			}
+			if (isset($_POST["delete"])) {
+				// Remove existing directory
+				echo "<div style='margin: auto; margin-top: 1.5em; border: 1px solid #969696; border-radius: 5px; width: 15em;'><span style='color: red;'>Do you really want to delete this place?</span> <form method='POST' action=''><input type='submit' name='confirm' value='Confirm'></form></div>";
+			}
+			if (isset($_POST["confirm"])) {
+				rmdir($current_dir);
 			}
 			// Read CSV file
 			$csvfile = $current_dir . DIRECTORY_SEPARATOR . "data.csv";
 			$lines = count(file($csvfile));
 			if ($lines > 1) {
 				if (!is_file($csvfile)) {
-					$HEADER = "Place;Map;Note\n";
+					$HEADER = "Place;Link;Note\n";
 					file_put_contents($csvfile, $HEADER);
 				}
 				$row = 1;
@@ -134,15 +141,18 @@ if ($protect) {
 					fclose($handle);
 				}
 			} else {
-				echo "<div style='margin-top: 1em;'>So empty here. Press the <strong>Edit</strong> button to add places.</div>";
+				echo "<div style='margin-top: 1em; margin-bottom: 1.5em;'>So empty here. Press the <strong>Edit</strong> button to add places.</div>";
 			}
 			?>
 			</tbody>
 		</table>
-		<form method='POST' action='edit.php'>
-			<p style="margin-top: 1.5em;"><button type='submit'>Edit</button></p>
+		<form style='display: inline;' method='POST' action=''>
+			<input class="button button-outline" style='display: inline; margin-right: 0.5em;' type='submit' name='delete' value='Delete'>
 		</form>
-		<p><?php echo $footer; ?></p>
+		<form style='display: inline;' method='POST' action='edit.php'>
+			<button type='submit'>Edit</button>
+		</form>
+		<div style="margin-top: 1.5em;"><?php echo $footer; ?></div>
 	</div>
 	<script>
 		function sortTable(n) {
