@@ -16,16 +16,17 @@ if (isset($_POST['password']) && password_verify($_POST['password'], $pw_hash)) 
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-    <head>
-
-        <meta name="viewport" content="width=device-width">
-        <link rel="shortcut icon" href="favicon.png" />
-        <link rel="stylesheet" href="css/milligram.min.css">
-        <link rel="stylesheet" href="css/styles.css">
-        <title><?php echo $title; ?></title>
-    </head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="favicon.png" />
+    <link rel="stylesheet" href="css/milligram.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <title><?php echo $title; ?></title>
+    <style>
+        body {
+            font-family: 'Barlow', serif;
+        }
+    </style>
 </head>
 
 <body>

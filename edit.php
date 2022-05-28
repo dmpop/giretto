@@ -18,6 +18,11 @@ if ($protect) {
 	<link rel="stylesheet" href="css/popup.css">
 	<script src="js/popup.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			font-family: 'Barlow', serif;
+		}
+	</style>
 </head>
 
 <body>

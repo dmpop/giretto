@@ -19,6 +19,11 @@ if ($protect) {
 	<link rel="stylesheet" href="css/milligram.min.css">
 	<link rel="stylesheet" href="css/styles.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			font-family: 'Barlow', serif;
+		}
+	</style>
 </head>
 
 <body>
@@ -106,12 +111,12 @@ if ($protect) {
 			}
 			// Read CSV file
 			$csvfile = $current_dir . DIRECTORY_SEPARATOR . "data.csv";
+			if (!is_file($csvfile)) {
+				$HEADER = "Place;Link;Note\n";
+				file_put_contents($csvfile, $HEADER);
+			}
 			$lines = count(file($csvfile));
 			if ($lines > 1) {
-				if (!is_file($csvfile)) {
-					$HEADER = "Place;Link;Note\n";
-					file_put_contents($csvfile, $HEADER);
-				}
 				$row = 1;
 				if (($handle = fopen($csvfile, "r")) !== FALSE) {
 					while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
@@ -146,6 +151,7 @@ if ($protect) {
 			?>
 			</tbody>
 		</table>
+		<div style="margin-top: 1.5em;"></div>
 		<form style='display: inline;' method='POST' action=''>
 			<input class="button button-outline" style='display: inline; margin-right: 0.5em;' type='submit' name='delete' value='Delete'>
 		</form>
