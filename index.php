@@ -22,6 +22,12 @@ if ($protect) {
 </head>
 
 <body>
+	<!-- Suppress form re-submit prompt on refresh -->
+	<script>
+		if (window.history.replaceState) {
+			window.history.replaceState(null, null, window.location.href);
+		}
+	</script>
 	<div id="content">
 		<div style="text-align: center; margin-bottom: 2em;">
 			<img style="display: inline; height: 2.5em; border-radius: 0; vertical-align: middle;" src="favicon.svg" alt="logo" />
@@ -67,23 +73,27 @@ if ($protect) {
 			?>
 			<form method='POST' action=''>
 				<input style='display: inline; width: 9em; margin-left: 0.5em;' type='text' name='place'>
-				<input style='display: inline; margin-left: 0.5em; margin-right: 1em;' type='submit' name='new' value='+'>
+				<input style='display: inline; margin-left: 0.5em; margin-right: 0.5em;' type='submit' name='new' value='Add place'>
+				<input style='display: inline;' type='submit' name='weather' value='Weather'>
 			</form>
-			<div>
 			<?php
 			// Get current weather from wttr.in
-			$url = "https://wttr.in/" . end(explode("/", $current_dir)) . "?format=%c+%t,+%w,+%p,+%h";
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_URL, $url);
-			$result = curl_exec($ch);
-			echo $result;
+			if (isset($_POST["weather"])) {
+				echo "<div>";
+				// Create new directory
+				$url = "https://wttr.in/" . end(explode("/", $current_dir)) . "?format=%c+%t,+%w,+%p,+%h";
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_URL, $url);
+				$result = curl_exec($ch);
+				echo $result;
+			}
 			echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"><img style="margin-left: 0.5em; vertical-align: -0.4em;" title="Weather forecast for the current location" src="svg/sun.svg" /></a></div>';
 			// Create the current directory
 			if (!file_exists($current_dir)) {
 				mkdir($current_dir, 0755, true);
 			}
-			if (isset($_POST["new"])) {
+			if (isset($_POST["new"]) && !empty($_POST["place"])) {
 				// Create new directory
 				mkdir($current_dir . DIRECTORY_SEPARATOR . $_POST["place"], 0755, true);
 			}
