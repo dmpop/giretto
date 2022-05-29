@@ -19,11 +19,6 @@ if ($protect) {
 	<link rel="stylesheet" href="css/milligram.min.css">
 	<link rel="stylesheet" href="css/styles.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style>
-		body {
-			font-family: 'Barlow', serif;
-		}
-	</style>
 </head>
 
 <body>
@@ -93,7 +88,7 @@ if ($protect) {
 				$result = curl_exec($ch);
 				echo $result;
 			}
-			echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"><img style="vertical-align: -0.4em;" title="Weather forecast for the current location" src="svg/sun.svg" /></a></div>';
+			echo '<a target="_blank" href="https://www.google.com/search?q=weather+forecast+' . end(explode("/", $current_dir)) . '"><img style="margin-left: 0.5em; vertical-align: -0.4em;" title="Weather forecast for the current location" src="svg/sun.svg" /></a></div>';
 			// Create the current directory
 			if (!file_exists($current_dir)) {
 				mkdir($current_dir, 0755, true);
@@ -104,7 +99,7 @@ if ($protect) {
 			}
 			if (isset($_POST["delete"])) {
 				// Remove existing directory
-				echo "<div style='margin: auto; margin-top: 1.5em; border: 1px solid #969696; border-radius: 5px; width: 15em;'><span style='color: red;'>Do you really want to delete this place?</span> <form method='POST' action=''><input type='submit' name='confirm' value='Confirm'></form></div>";
+				echo "<div style='margin: auto; margin-top: 1.5em; border: 1px solid #969696; border-radius: 5px; width: 15em;'><span style='color: red;'>Do you really want to delete this place?</span> <form method='POST' action=''><input type='submit' name='confirm' value='Yes'></form></div>";
 			}
 			if (isset($_POST["confirm"])) {
 				rmdir($current_dir);

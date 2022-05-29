@@ -22,16 +22,14 @@ if (isset($_POST['password']) && password_verify($_POST['password'], $pw_hash)) 
     <link rel="stylesheet" href="css/milligram.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <title><?php echo $title; ?></title>
-    <style>
-        body {
-            font-family: 'Barlow', serif;
-        }
-    </style>
 </head>
 
 <body>
     <div id="content">
-        <h1><?php echo $title; ?></h1>
+        <div style="text-align: center; margin-bottom: 2em;">
+            <img style="display: inline; height: 2.5em; border-radius: 0; vertical-align: middle;" src="favicon.svg" alt="logo" />
+            <h1 style="display: inline; margin-left: 0.19em; vertical-align: middle; letter-spacing: 3px;"><?php echo $title ?></h1>
+        </div>
         <form action="" method="POST">
             <label>Password:</label>
             <input style="width: 15em;" type="password" name="password"><br />
