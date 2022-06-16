@@ -64,6 +64,7 @@ if ($protect) {
 				echo '<select style="width: auto;" name="" onchange="javascript:location.href = this.value;">';
 				echo '<option value="Default">Choose place</option>';
 				foreach ($sub_dirs as $dir) {
+					setlocale(LC_ALL,'C.UTF-8');
 					$dir_name = basename($dir);
 					$dir_option = str_replace('\'', '&apos;', $current_dir . DIRECTORY_SEPARATOR . $dir_name);
 					echo "<option value='?d=" . ltrim($dir_option, '/') . "'>" . $dir_name . "</option>";
